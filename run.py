@@ -332,8 +332,6 @@ class NeuroSanRunner:
             "nsflow.backend.main:app",
             "--port",
             str(self.args["nsflow_port"]),
-            "--host=",
-            "0.0.0.0",
             "--reload",
         ]
 
