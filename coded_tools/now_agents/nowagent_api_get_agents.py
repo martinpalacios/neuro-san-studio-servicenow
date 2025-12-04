@@ -66,9 +66,7 @@ class NowAgentAPIGetAgents(CodedTool):
         servicenow_get_agents_query: str = self._get_env_variable("SERVICENOW_GET_AGENTS_QUERY")
         servicenow_user: str = self._get_env_variable("SERVICENOW_USER")
         servicenow_pwd: str = self._get_env_variable("SERVICENOW_PWD")
-        logger.debug("ServiceNow URL: %s", servicenow_url)
         # NOTE: Never log credentials (user/pwd)
-
         tool_name = self.__class__.__name__
         logger.debug("========== Calling %s ==========", tool_name)
 

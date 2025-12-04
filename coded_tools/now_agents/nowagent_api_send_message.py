@@ -73,6 +73,7 @@ class NowAgentSendMessage(CodedTool):
         servicenow_caller_email: str = self._get_env_variable("SERVICENOW_CALLER_EMAIL")
         servicenow_user: str = self._get_env_variable("SERVICENOW_USER")
         servicenow_pwd: str = self._get_env_variable("SERVICENOW_PWD")
+        servicenow_response_user: str = self._get_env_variable("SERVICENOW_GET_RESPONSE_USER")
         logger.debug("ServiceNow URL: %s", servicenow_url)
         # NOTE: Never log credentials (user/pwd)
 
@@ -95,11 +96,13 @@ class NowAgentSendMessage(CodedTool):
             "metadata": {"email_id": servicenow_caller_email},
             "inputs": [{"content_type": "text", "content": inquiry}],
         }
+        logger.warning(url);
 
         # Execute the HTTP POST request
         response = requests.post(
             url, auth=(servicenow_user, servicenow_pwd), headers=headers, data=json.dumps(request_payload), timeout=30
         )
+        logger.warning(response.json());
 
         # Check for HTTP codes other than 200
         if response.status_code != 200:
@@ -127,7 +130,7 @@ class NowAgentSendMessage(CodedTool):
         logger.debug("========== Done with %s ==========", tool_name)
 
         # Store session information for response retrieval
-        user_id = tool_response["metadata"]["user_id"]
+        user_id = servicenow_response_user
         session_id = tool_response["metadata"]["session_id"]
         sly_data["session_path"] = f"{user_id}_{session_id}"
         # NOTE: sly_data may contain secrets - never log it
